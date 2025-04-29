@@ -1,0 +1,20 @@
+<nav class="navbar bg-body-tertiary">
+    <div class="container-fluid">
+        <a href="/"> <img class="navbar-brand" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGtf3Er61rsvYm7q5JjBMn3tSxaelRJnoodA&s" alt=""></a>
+        <form class="d-flex" role="search" action="/search" method="GET">
+            <input class="form-control me-2" id="searchInput" name="q" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+
+        <div class="d-flex align-items-center ">
+            <%if(user){%>
+                <a class="login" href="/card"><button type="button" class="btn btn-danger"><i class="fa-solid fa-cart-shopping"></i>Card</button></a>
+                <a class="login" href="/order"><button type="button" class="btn btn-danger">Orders</button></a>
+                <a class="login" href="/logout"><b>Logout</b></a>
+                <%}%>
+                    <%if(!user){%> <a class="login" href="/login"><b>Login</b></a>
+                        <a class="signup" href="/signup"><b>Signup</b></a>
+                        <%}%>
+        </div>
+    </div>
+</nav>
