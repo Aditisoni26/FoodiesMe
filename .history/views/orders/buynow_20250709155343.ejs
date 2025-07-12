@@ -1,0 +1,104 @@
+<% layout("/layouts/boilerplate")%>
+
+
+    <body>
+        <div class="signup-page">
+            <h3>Order from FoodieMe</h3><br>
+            <form method="post" action="/show/<%=orderedItem._id%>/order" class="needs-validation" novalidate>
+                <div class="mb-1">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" name="name" required class="form-control" value="<%=orderedItem.name%>" readonly>
+                    <div class="invalid-feedback">please enter a valid address</div>
+                </div>
+                <div class="mb-1">
+                    <label for="price" class="form-label">Price</label>
+                    <input type="text" name="price" required class="form-control" value="<%=orderedItem.price%>" readonly>
+                    <div class="invalid-feedback">please enter a valid address</div>
+                </div>
+                <!-- Address Field -->
+                <div class="mb-1">
+                    <label for="address" class="form-label">Address</label>
+                    <input type="text" name="address" required class="form-control" value="<%= defaultAddress ? `${defaultAddress.street}, ${defaultAddress.city}, ${defaultAddress.state}, ${defaultAddress.pincode}` : '' %>">
+                    <div class="invalid-feedback">Please enter a valid address</div>
+                </div>
+
+                <!-- Mobile Number -->
+                <div class="mb-1">
+                    <label for="mobileNo" class="form-label">Mobile no.</label>
+                    <input type="tel" name="mobileNo" required class="form-control" value="<%= user.mobileNo %>">
+                    <div class="invalid-feedback">Please enter a valid mobile number</div>
+                </div>
+
+                <div>
+
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault2" checked>
+                    <label class="form-check-label" for="radioDefault2">
+                      Upi payment
+                    </label>
+                </div>
+        </div>
+        <br>
+        <!-- Scheduled Delivery -->
+        <div class="mb-1 ">
+            <label for="scheduledAt" class="form-label">Schedule Delivery</label>
+            <input type="datetime-local" name="scheduledAt" required class="form-control schedule-input">
+            <div class="invalid-feedback">Please select a valid delivery time.</div>
+        </div>
+
+        <button type="button" id="rzp-button" class="btn btn-danger btn-buy">Pay with UPI</button>
+
+        </form>
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+        <script>
+            document.getElementById('rzp-button').onclick = async function(e) {
+                e.preventDefault();
+
+                // You can get price from hidden input or orderedItem.price directly
+                const amount = <%=orderedItem.price%>;
+
+                const res = await fetch("/create-order", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        amount
+                    }),
+                });
+
+                const data = await res.json();
+
+                const options = {
+                    key: "<%= process.env.RAZORPAY_KEY_ID || 'rzp_test_AbCdEf123456' %>", // fallback or replace with test key
+                    amount: data.amount,
+                    currency: data.currency,
+                    name: "FoodieMe",
+                    description: "Food Order",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGtf3Er61rsvYm7q5JjBMn3tSxaelRJnoodA&s",
+                    order_id: data.id,
+                    handler: function(response) {
+                        alert("Payment successful! ID: " + response.razorpay_payment_id);
+                        // optionally redirect or save response to backend
+                        window.location.href = "/order";
+                    },
+                    prefill: {
+                        name: "<%= user?.username || '' %>",
+                        email: "<%= user?.email || 'test@example.com' %>",
+                    },
+                    theme: {
+                        color: "#F37254",
+                    },
+                };
+
+                const rzp1 = new Razorpay(options);
+                rzp1.open();
+            };
+        </script>
+
+
+        </div>
+
+    </body>

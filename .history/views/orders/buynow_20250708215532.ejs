@@ -1,0 +1,51 @@
+<% layout("/layouts/boilerplate")%>
+
+
+    <body>
+        <div class="signup-page">
+            <h3>Order from FoodieMe</h3><br>
+            <form method="post" action="/show/<%=orderedItem._id%>/order" class="needs-validation" novalidate>
+                <div class="mb-1">
+                    <label for="name" class="form-label">Name</label>
+                    <input type="text" name="name" required class="form-control" value="<%=orderedItem.name%>" readonly>
+                    <div class="invalid-feedback">please enter a valid address</div>
+                </div>
+                <div class="mb-1">
+                    <label for="price" class="form-label">Price</label>
+                    <input type="text" name="price" required class="form-control" value="<%=orderedItem.price%>" readonly>
+                    <div class="invalid-feedback">please enter a valid address</div>
+                </div>
+                <div class="mb-1">
+                    <label for="address" class="form-label">Address</label>
+                    <input type="text" name="address" required class="form-control">
+                    <div class="invalid-feedback">please enter a valid address</div>
+                </div>
+                <div class="mb-1">
+                    <label for="mobileNo" class="form-label">Mobile no.</label>
+                    <input type="tel" name="mobileNo" required class="form-control">
+                    <div class="invalid-feedback">please enter a valid Mobile number</div>
+                </div>
+                <div>
+                    <label for="payment-mode" class="form-label">Mode of payment-</label><br>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault1">
+                        <label class="form-check-label" for="radioDefault1">
+                      Cash on delivery
+                    </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault2" checked>
+                        <label class="form-check-label" for="radioDefault2">
+                      Upi payment
+                    </label>
+                    </div>
+                </div>
+                <br>
+                <button type="button" id="rzp-button" class="btn btn-danger btn-buy">Pay with UPI</button>
+
+            </form>
+
+
+        </div>
+
+    </body>

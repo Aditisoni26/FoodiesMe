@@ -1,0 +1,55 @@
+<% layout("/layouts/boilerplate")%>
+
+    <body>
+        <div class="card  show-card" style="width: 30rem;">
+            <img src="<%= item.image_url %>" class=" card-img-top " alt="... ">
+            <div class="card-body ">
+                <div>Name -
+                    <%= item.name %>
+                </div>
+                <div>Price - &#8377;
+                    <%= item.price %>
+                </div>
+                <div>Veg -
+                    <%= item.veg%>
+                </div>
+                <div>Category -
+                    <%= item.category %>
+                </div>
+                <div>description -
+                    <%= item.description %>
+                </div>
+            </div>
+        </div>
+        <div class="show-button">
+            <form method="get" action="/<%= item._id%>/buynow" class="nav-card"><button type="submit" class="btn btn-danger"> <input type="hidden" name="_csrf" value="<%= csrfToken %>">Buy now</button></form>
+            <form method="post" action="/show/<%= item._id%>/Add-to-card" class="nav-card"><button type="submit" class="btn btn-danger">Add to card</button></form>
+        </div>
+        <script>
+            const buttons = document.querySelectorAll(".show-button .btn-danger");
+
+            buttons.forEach((btn) => {
+                // because queryselector and getelement return array so we have to use loop"
+                if (btn.textContent.trim() === "Add to card") {
+                    btn.addEventListener("click", function(event) {
+                        event.preventDefault();
+                        btn.classList.remove("btn-danger");
+                        btn.classList.add("btn-success");
+                        btn.textContent = "Added to cart";
+
+                        setTimeout(() => {
+                            btn.closest("form").submit();
+                        }, 1000);
+                        setTimeout(() => {
+                            btn.classList.remove("btn-success");
+                            btn.classList.add("btn-danger");
+                            btn.textContent = "Add to card";
+                        }, 1000);
+                    });
+                }
+            });
+        </script>
+
+    </body>
+
+    </html>

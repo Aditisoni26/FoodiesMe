@@ -1,0 +1,41 @@
+<% layout("/layouts/boilerplate")%>
+
+    <body>
+        <%for(item of items){%>
+            <div class="card mb-3" style="max-width: 800px;max-height: 200px;">
+                <div class="row g-0">
+                    <div class="col-md-4 card-image ">
+                        <img src=" <%=item.image_url%>" class="img-fluid rounded-start" alt="..." style="max-width: 400px; min-width: 250px; max-height: 165px;">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                Name -
+                                <%=item.name%>
+                            </h5>
+
+                            <p class="card-text">
+                                Price - &#8377;
+                                <%=item.price%>
+                            </p>
+
+                            <p class="card-text">
+                                veg -
+                                <%=item.veg%>
+                            </p>
+                            <p class="card-text">
+                                category -
+                                <%=item.category%>
+                            </p>
+                            <p class="card-text">
+                                Ordered on -
+                                <%= new Date(item.date).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }) %>
+                            </p>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <%}%>
+    </body>

@@ -1,0 +1,32 @@
+<% layout("/layouts/boilerplate") %>
+
+    <body>
+        <h2 class="text-center mt-4">Manage Orders</h2>
+
+        <% for(let order of allOrders) { %>
+            <div class="card mb-3 mx-auto" style="max-width: 800px;">
+                <div class="card-body">
+                    <h5><b><%= order.name %></b> - ₹
+                        <%= order.price %>
+                    </h5>
+                    <p>User:
+                        <%= order.user?.username || 'Guest' %>
+                    </p>
+                    <p>Ordered on:
+                        <%= new Date(order.date).toLocaleString("en-IN") %>
+                    </p>
+                    <p>Current Status: <strong><%= order.status %></strong></p>
+
+                    <form method="POST" action="/admin/orders/<%= order._id %>/status" class="d-flex">
+                        <select name="status" class="form-select me-2" style="max-width: 200px;">
+                        <option value="Processing" <%= order.status === 'Processing' ? 'selected' : '' %>>Processing</option>
+                        <option value="Cooking" <%= order.status === 'Cooking' ? 'selected' : '' %>>Cooking</option>
+                        <option value="On the Way" <%= order.status === 'On the Way' ? 'selected' : '' %>>On the Way</option>
+                        <option value="Delivered" <%= order.status === 'Delivered' ? 'selected' : '' %>>Delivered</option>
+                    </select>
+                        <button class="btn btn-primary btn-sm">Update</button>
+                    </form>
+                </div>
+            </div>
+            <% } %>
+    </body>

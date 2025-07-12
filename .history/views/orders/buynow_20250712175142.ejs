@@ -1,0 +1,98 @@
+<% layout("/layouts/boilerplate")%>
+
+    <body>
+        <div class="container py-4">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-8 col-lg-6">
+                    <h3 class="text-center mb-4">Order from FoodieMe</h3>
+                    <form method="POST" action="/show/<%=orderedItem._id%>/order" class="needs-validation" novalidate>
+                        <!-- Name -->
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" name="name" required class="form-control" value="<%= orderedItem.name %>" readonly>
+                            <div class="invalid-feedback">Please enter a valid name.</div>
+                        </div>
+
+                        <!-- Price -->
+                        <div class="mb-3">
+                            <label for="price" class="form-label">Price</label>
+                            <input type="text" name="price" required class="form-control" value="<%= orderedItem.price %>" readonly>
+                            <div class="invalid-feedback">Please enter a valid price.</div>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address</label>
+                            <input type="text" name="address" required class="form-control" value="<%= defaultAddress ? `${defaultAddress.street}, ${defaultAddress.city}, ${defaultAddress.state}, ${defaultAddress.pincode}` : '' %>">
+                            <div class="invalid-feedback">Please enter a valid address.</div>
+                        </div>
+
+                        <!-- Mobile Number -->
+                        <div class="mb-3">
+                            <label for="mobileNo" class="form-label">Mobile No.</label>
+                            <input type="tel" name="mobileNo" required class="form-control" value="<%= user.mobileNo %>">
+                            <div class="invalid-feedback">Please enter a valid mobile number.</div>
+                        </div>
+
+                        <!-- Scheduled Delivery -->
+                        <div class="mb-3">
+                            <label for="scheduledAt" class="form-label">Schedule Delivery</label>
+                            <input type="datetime-local" name="scheduledAt" required class="form-control">
+                            <div class="invalid-feedback">Please select a valid delivery time.</div>
+                        </div>
+
+                        <!-- Payment Button -->
+                        <div class="d-grid mt-4">
+                            <button type="button" id="rzp-button" class="btn btn-danger">Pay with UPI</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Razorpay Script -->
+        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+        <script>
+            document.getElementById('rzp-button').onclick = async function(e) {
+                e.preventDefault();
+
+                const amount = <%= orderedItem.price %>;
+
+                const res = await fetch("/create-order", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        amount
+                    }),
+                });
+
+                const data = await res.json();
+
+                const options = {
+                    key: "<%= process.env.RAZORPAY_KEY_ID || 'rzp_test_AbCdEf123456' %>",
+                    amount: data.amount,
+                    currency: data.currency,
+                    name: "FoodieMe",
+                    description: "Food Order",
+                    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGtf3Er61rsvYm7q5JjBMn3tSxaelRJnoodA&s",
+                    order_id: data.id,
+                    handler: function(response) {
+                        alert("Payment successful! ID: " + response.razorpay_payment_id);
+                        window.location.href = "/order";
+                    },
+                    prefill: {
+                        name: "<%= user?.username || '' %>",
+                        email: "<%= user?.email || 'test@example.com' %>",
+                    },
+                    theme: {
+                        color: "#F37254",
+                    },
+                };
+
+                const rzp1 = new Razorpay(options);
+                rzp1.open();
+            };
+        </script>
+    </body>

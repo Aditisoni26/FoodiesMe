@@ -1,0 +1,10 @@
+<% layout("/layouts/boilerplate") %>
+    <h2 class="text-center my-4">Edit Item Price</h2>
+
+    <form action="/edit/<%= item._id %>" method="POST" class="w-50 mx-auto">
+        <div class="mb-3">
+            <label for="price" class="form-label">New Price for <%= item.name %></label>
+            <input type="number" name="price" id="price" class="form-control" value="<%= item.price %>" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Price</button>
+    </form>

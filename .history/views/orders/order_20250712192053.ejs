@@ -1,0 +1,62 @@
+<% layout("/layouts/boilerplate")%>
+
+    <body>
+        <%for(item of items){%>
+            <div class="card mb-3" style="max-width: 800px;max-height: 260px;">
+                <div class="row g-0">
+                    <div class="col-md-4 card-image ">
+                        <img src=" <%=item.image_url%>" class="img-fluid rounded-start" alt="..." style="max-width: 400px; min-width: 250px; max-height: 200px;">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                Name -
+                                <%=item.name%>
+                            </h5>
+
+                            <p class="card-text">
+                                Price - &#8377;
+                                <%=item.price%>
+                            </p>
+
+                            <p class="card-text">
+                                veg -
+                                <%=item.veg%>
+                            </p>
+                            <p class="card-text">
+                                category -
+                                <%=item.category%>
+                            </p>
+                            <p class="card-text">
+                                Ordered on -
+                                <%= new Date(item.date).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }) %>
+                            </p>
+                            <p class="card-text"><strong>Scheduled For:</strong>
+                                <%= new Date(item.scheduledAt).toLocaleString() %>
+                            </p>
+
+                            <p class="card-text">
+                                <b>Status:</b>
+                                <% if(item.status === "Delivered") { %>
+                                    <span class="text-success"><%= item.status %></span>
+                                    <% } else if(item.status === "On the Way") { %>
+                                        <span class="text-warning"><%= item.status %></span>
+                                        <% } else { %>
+                                            <span class="text-danger"><%= item.status %></span>
+                                            <% } %>
+                            </p>
+                            <% if (!item.cancelled && item.status !== "Delivered") { %>
+                                <form method="POST" action="/order/<%= item._id %>/cancel">
+                                    <button class="btn btn-outline-danger btn-sm">Cancel Order</button>
+                                </form>
+                                <% } else if (item.cancelled) { %>
+                                    <p class="text-danger"><strong>Cancelled</strong></p>
+                                    <% } %>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <%}%>
+s
+    </body>

@@ -1,0 +1,79 @@
+<% layout("/layouts/boilerplate") %>
+
+    <div class="container mt-5">
+        <h2>Hello,
+            <%= user.username %> 👋</h2>
+
+        <hr>
+
+        <h4>📦 Your Saved Addresses</h4>
+
+        <% if (user.addresses && user.addresses.length > 0) { %>
+            <% user.addresses.forEach((addr, index) => { %>
+                <div class="card p-3 my-2  card-address">
+                    <p><strong>Address:</strong>
+                        <%= addr.street %>,
+                            <%= addr.city %>,
+                                <%= addr.state %> -
+                                    <%= addr.pincode %>
+                    </p>
+                    <p><strong>Status:</strong>
+                        <% if (addr.isDefault) { %>
+                            ✅ Default Address
+                            <% } else { %>
+                                Not Default
+                                <% } %>
+                    </p>
+
+                    <div class="d-flex gap-2">
+                        <% if (!addr.isDefault) { %>
+                            <form method="POST" action="/user/address/<%= index %>/default">
+                                <button type="submit" class="btn btn-sm btn-outline-warning">Set as Default</button>
+                            </form>
+                            <% } %>
+
+                                <form method="POST" action="/user/address/<%= index %>?_method=DELETE">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                    </div>
+                </div>
+                <% }) %>
+                    <% } else { %>
+                        <p>No saved addresses yet.</p>
+                        <% } %>
+
+                            <hr>
+
+                            <h4>➕ Add New Address</h4>
+
+                            <form method="POST" action="/user/address">
+                                <div class="mb-2">
+                                    <label>Street:</label>
+                                    <input type="text" class="form-control" name="street" required>
+                                </div>
+                                <div class="mb-2">
+                                    <label>City:</label>
+                                    <input type="text" class="form-control" name="city" required>
+                                </div>
+                                <div class="mb-2">
+                                    <label>State:</label>
+                                    <input type="text" class="form-control" name="state" required>
+                                </div>
+                                <div class="mb-2">
+                                    <label>Pincode:</label>
+                                    <input type="text" class="form-control" name="pincode" required>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" name="isDefault" id="defaultAddress">
+                                    <label class="form-check-label" for="defaultAddress">Set as Default</label>
+                                </div>
+                                <button class="btn btn-primary">Add Address</button>
+                            </form>
+    </div>
+    <style>
+        b @media (max-width: 768px) {
+            .card {
+                max-height: 12rem;
+            }
+        }
+    </style>

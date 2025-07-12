@@ -1,0 +1,111 @@
+<% layout("/layouts/boilerplate")%>
+
+    <body>
+        <div class="food-nav">
+            <div onclick="window.location.href='/?category=Pizza'" style="cursor: pointer;">
+                <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002" alt=" ">
+                <span>Pizza</span>
+            </div>
+            <div onclick="window.location.href='/?category=Pasta'" style="cursor: pointer;">
+                <img src="https://images.pexels.com/photos/1279330/pexels-photo-1279330.jpeg" alt=" ">
+                <span>Pasta</span>
+            </div>
+            <div onclick="window.location.href='/?category=Noodles'" style="cursor: pointer;">
+                <img src="https://images.unsplash.com/photo-1555126634-323283e090fa" alt=" ">
+                <span>Noodles</span>
+            </div>
+            <div onclick="window.location.href='/?category=Rice'" style="cursor: pointer;">
+                <img src="https://images.pexels.com/photos/3926124/pexels-photo-3926124.jpeg" alt=" ">
+                <span>Rice</span>
+            </div>
+            <div onclick="window.location.href='/?category=Appetizer'" style="cursor: pointer;">
+                <img src="https://images.pexels.com/photos/6210876/pexels-photo-6210876.jpeg" alt=" ">
+                <span>Appetizer</span>
+            </div>
+            <div onclick="window.location.href='/?category=Curry'" style="cursor: pointer;">
+                <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950" alt=" ">
+                <span>Curry</span>
+            </div>
+            <div onclick="window.location.href='/?category=Biryani'" style="cursor: pointer;">
+                <img src="https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a" alt=" ">
+                <span>Biryani</span>
+            </div>
+            <div onclick="window.location.href='/?category=Bread'" style="cursor: pointer;">
+                <img src="https://images.pexels.com/photos/2474661/pexels-photo-2474661.jpeg" alt=" ">
+                <span>Bread</span>
+            </div>
+            <div onclick="window.location.href='/?category=Street Food'" style="cursor: pointer;">
+                <img src="https://images.unsplash.com/photo-1601050690597-df0568f70950" alt=" ">
+                <span>Street Food</span>
+            </div>
+            <div onclick="window.location.href='/?category=Dessert'" style="cursor: pointer;">
+                <img src="https://images.unsplash.com/photo-1571115177098-24ec42ed204d" alt=" ">
+                <span>Dessert</span>
+            </div>
+            <div onclick="window.location.href='/?category=Beverage'" style="cursor: pointer;">
+                <img src="https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9" alt=" ">
+                <span>Beverage</span>
+            </div>
+        </div>
+
+        <div class="home ">
+            <% for(list of allListing){%>
+                <div class="card " style="width: 20rem; ">
+                    <a href="/show/<%=list._id%>">
+                <img src="<%= list.image_url %>" class=" card-img-top " alt="... ">
+                <div class="card-body ">
+                    <span class="card-text  category">
+                            <%=list.category%>
+                        </span>
+                    <span class="card-text price">
+                            (&#8377;<%=list.price%>)
+                    </span>
+                </div>
+                </a>
+                </div>
+
+
+                <%}%>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js "></script>
+        <style>
+            .food-nav {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+                padding: 1rem;
+                max-height: 200px;
+                /* Strictly 2 rows */
+                overflow: hidden;
+            }
+            
+            .food-nav div {
+                width: 75px;
+                text-align: center;
+                cursor: pointer;
+            }
+            
+            .food-nav img {
+                width: 100%;
+                height: 55px;
+                object-fit: cover;
+                border-radius: 50%;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+            
+            .food-nav span {
+                display: block;
+                margin-top: 4px;
+                font-size: 0.7rem;
+                font-weight: 500;
+                word-break: break-word;
+            }
+        </style>
+
+
+
+    </body>
+
+    </html>

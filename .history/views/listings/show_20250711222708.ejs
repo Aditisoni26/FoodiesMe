@@ -1,0 +1,202 @@
+<% layout("/layouts/boilerplate")%>
+
+    <body>
+        <div class="card  show-card" style="width: 30rem;">
+            <img src="<%= item.image_url %>" class=" card-img-top " alt="... ">
+            <div class="card-body ">
+                <div>Name -
+                    <%= item.name %>
+                </div>
+                <div>Price - &#8377;
+                    <%= item.price %>
+                </div>
+                <div>Veg -
+                    <%= item.veg%>
+                </div>
+                <div>Category -
+                    <%= item.category %>
+                </div>
+                <div>description -
+                    <%= item.description %>
+                </div>
+            </div>
+        </div>
+        <div class="show-button">
+            <% if (user && user.role === "admin") { %>
+                <!-- Admin buttons -->
+                <form method="GET" action="/edit/<%= item._id %>" class="nav-card">
+                    <button type="submit" class="btn btn-primary">Edit Price</button>
+                </form>
+                <form method="POST" action="/delete/<%= item._id %>?_method=DELETE" class="nav-card">
+                    <button type="submit" class="btn btn-danger">Delete Item</button>
+                </form>
+
+                <% } else if (user && user.role === "user") { %>
+                    <!-- User buttons -->
+                    <form method="get" action="/<%= item._id%>/buynow" class="nav-card buy-button">
+                        <button type="submit" class="btn btn-danger btn-buy">Buy now</button>
+                    </form>
+                    <form method="post" action="/show/<%= item._id%>/Add-to-card" class="nav-card">
+                        <button type="submit" class="btn btn-danger">Add to cart</button>
+                    </form>
+                    <form method="POST" action="/wishlist/<%= item._id %>/toggle" class="nav-card">
+                        <button type="submit" class="btn btn-outline-dark">
+            <% if (user.wishlist && user.wishlist.map(i => i.toString()).includes(item._id.toString())) { %>
+                ❤️ Remove from Wishlist
+            <% } else { %>
+                🤍 Add to Wishlist
+            <% } %>
+        </button>
+                    </form>
+
+                    <% } else { %>
+                        <!-- Guest -->
+                        <a href="/login" class="btn btn-secondary">Login to order</a>
+                        <% } %>
+
+        </div>
+        <hr>
+        <div class="rating-div">
+            <h4>Ratings & Reviews</h4>
+
+            <%
+  let avgRating = item.averageRating ? item.averageRating.toFixed(1) : "No ratings yet";
+%>
+                <p>Average Rating: <strong><%= avgRating %> / 5</strong> (
+                    <%= item.reviews ? item.reviews.length : 0 %> reviews)</p>
+
+                <div>
+                    <% if (item.reviews && item.reviews.length > 0) { %>
+                        <ul class="list-group">
+                            <% item.reviews.forEach(review => { %>
+                                <li class="list-group-item">
+                                    <strong><%= review.rating %> ⭐</strong> -
+                                    <%= review.comment || "No comment" %> <br>
+                                        <small>By <%= review.user ? review.user.username : "Anonymous" %> on <%= new Date(review.createdAt).toLocaleDateString() %></small>
+                                </li>
+                                <% }) %>
+                        </ul>
+                        <% } else { %>
+                            <p>No reviews yet. Be the first to review!</p>
+                            <% } %>
+                </div>
+
+                <% if (user && user.role === "user") { %>
+                    <hr>
+                    <h5>Add your review</h5>
+                    <form method="POST" action="/show/<%= item._id %>/add-review">
+                        <div class="mb-3">
+                            <label for="rating" class="form-label">Rating (1 to 5)</label>
+                            <select id="rating" name="rating" class="form-select" required>
+        <option value="">Select rating</option>
+        <% for(let i=1; i<=5; i++) { %>
+          <option value="<%= i %>"><%= i %> Star<%= i > 1 ? "s" : "" %></option>
+        <% } %></div></div>
+      </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="comment" class="form-label">Review</label>
+                            <textarea id="comment" name="comment" class="form-control" rows="3" placeholder="Write your review here..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Review</button>
+                        <br>
+                        <br>
+                    </form>
+                    <% } else { %>
+                        <p><a href="/login">Login</a> to add a review.</p>
+                        <% } %>
+
+                            <script>
+                                const buttons = document.querySelectorAll(".show-button .btn-danger");
+
+                                buttons.forEach((btn) => {
+                                    // becau              se queryselector and getelement return array so we have to use loop"
+                                    if (btn.textContent.trim() === "Add to card") {
+                                        btn.addEventListener("click", function(event) {
+                                            event.preventDefault();
+                                            btn.classList.remove("btn-danger");
+                                            btn.classList.add("btn-success");
+                                            btn.textContent = "Added to cart";
+
+                                            setTimeout(() => {
+                                                btn.closest("form").submit();
+                                            }, 1000);
+                                            setTimeout(() => {
+                                                btn.classList.remove("btn-success");
+                                                btn.classList.add("btn-danger");
+                                                btn.textContent = "Add to card";
+                                            }, 1000);
+                                        });
+                                    }
+                                });
+                            </script>
+                            <style>
+                                .show-card {
+                                    max-width: 100%;
+                                    margin: auto;
+                                    margin-top: 1rem;
+                                }
+                                
+                                .show-button {
+                                    display: flex;
+                                    flex-wrap: wrap;
+                                    gap: 0.5rem;
+                                    justify-content: center;
+                                    margin: 1rem auto;
+                                    max-width: 600px;
+                                }
+                                
+                                .show-button form {
+                                    flex: 1 1 45%;
+                                    max-width: 180px;
+                                    min-width: 120px;
+                                }
+                                
+                                .btn {
+                                    width: 100%;
+                                    font-size: 1rem;
+                                    padding: 0.5rem 1rem;
+                                }
+                                
+                                @media (max-width: 576px) {
+                                    .btn {
+                                        font-size: 0.85rem;
+                                        padding: 0.4rem 0.6rem;
+                                    }
+                                    .show-button form {
+                                        flex: 1 1 100%;
+                                        max-width: 100%;
+                                    }
+                                    .btn-buy {
+                                        margin-left: 2rem;
+                                    }
+                                }
+                                
+                                .rating-div {
+                                    max-width: 600px;
+                                    margin: 1rem auto;
+                                    padding: 0 1rem;
+                                }
+                                
+                                .list-group-item {
+                                    font-size: 0.95rem;
+                                }
+                                
+                                @media (max-width: 576px) {
+                                    .card-body div {
+                                        font-size: 0.9rem;
+                                    }
+                                    .rating-div h4,
+                                    .rating-div h5 {
+                                        font-size: 1rem;
+                                    }
+                                    .btn {
+                                        font-size: 0.85rem;
+                                        padding: 0.4rem 0.8rem;
+                                    }
+                                }
+                            </style>
+
+    </body>
+
+    </html>

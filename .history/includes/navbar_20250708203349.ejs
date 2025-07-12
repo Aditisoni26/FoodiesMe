@@ -1,0 +1,44 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary shadow">
+    <div class="container-fluid">
+        <!-- Logo -->
+        <a class="navbar-brand" href="/">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGtf3Er61rsvYm7q5JjBMn3tSxaelRJnoodA&s" alt="Logo" height="40">
+        </a>
+
+        <!-- Toggler for mobile view -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+        <!-- Navbar Content -->
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <!-- Search Bar -->
+            <form class="d-flex ms-auto my-2 my-lg-0" role="search" action="/search" method="GET">
+                <input class="form-control me-2" id="searchInput" name="q" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+
+            <!-- Right side links -->
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center gap-2 px-3">
+                <% if (user) { %>
+                    <li class="nav-item">
+                        <a href="/card" class="btn btn-danger"><i class="fa-solid fa-cart-shopping"></i> Cart</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/order" class="btn btn-danger">Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/logout" class="nav-link"><strong>Logout</strong></a>
+                    </li>
+                    <% } else { %>
+                        <li class="nav-item">
+                            <a href="/login" class="nav-link"><strong>Login</strong></a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/signup" class="nav-link"><strong>Signup</strong></a>
+                        </li>
+                        <% } %>
+            </ul>
+        </div>
+    </div>
+</nav>

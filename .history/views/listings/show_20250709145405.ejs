@@ -1,0 +1,86 @@
+<% layout("/layouts/boilerplate")%>
+
+    <body>
+        <div class="card  show-card" style="width: 30rem;">
+            <img src="<%= item.image_url %>" class=" card-img-top " alt="... ">
+            <div class="card-body ">
+                <div>Name -
+                    <%= item.name %>
+                </div>
+                <div>Price - &#8377;
+                    <%= item.price %>
+                </div>
+                <div>Veg -
+                    <%= item.veg%>
+                </div>
+                <div>Category -
+                    <%= item.category %>
+                </div>
+                <div>description -
+                    <%= item.description %>
+                </div>
+            </div>
+        </div>
+        <div class="show-button">
+            <% if (user && user.role === "admin") { %>
+                <!-- Admin buttons -->
+                <form method="GET" action="/edit/<%= item._id %>" class="nav-card">
+                    <button type="submit" class="btn btn-primary">Edit Price</button>
+                </form>
+                <form method="POST" action="/delete/<%= item._id %>?_method=DELETE" class="nav-card">
+                    <button type="submit" class="btn btn-danger">Delete Item</button>
+                </form>
+
+                <% } else if (user && user.role === "user") { %>
+                    <!-- User buttons -->
+                    <form method="get" action="/<%= item._id%>/buynow" class="nav-card buy-button">
+                        <button type="submit" class="btn btn-danger">Buy now</button>
+                    </form>
+                    <form method="post" action="/show/<%= item._id%>/Add-to-card" class="nav-card">
+                        <button type="submit" class="btn btn-danger">Add to cart</button>
+                    </form>
+                    <form method="POST" action="/wishlist/<%= item._id %>/toggle" class="nav-card">
+                        <button type="submit" class="btn btn-outline-dark">
+            <% if (user.wishlist && user.wishlist.map(i => i.toString()).includes(item._id.toString())) { %>
+                ❤️ Remove from Wishlist
+            <% } else { %>
+                🤍 Add to Wishlist
+            <% } %>
+        </button>
+                    </form>
+
+                    <% } else { %>
+                        <!-- Guest -->
+                        <a href="/login" class="btn btn-secondary">Login to order</a>
+                        <% } %>
+
+        </div>
+
+        <script>
+            const buttons = document.querySelectorAll(".show-button .btn-danger");
+
+            buttons.forEach((btn) => {
+                // becau              se queryselector and getelement return array so we have to use loop"
+                if (btn.textContent.trim() === "Add to card") {
+                    btn.addEventListener("click", function(event) {
+                        event.preventDefault();
+                        btn.classList.remove("btn-danger");
+                        btn.classList.add("btn-success");
+                        btn.textContent = "Added to cart";
+
+                        setTimeout(() => {
+                            btn.closest("form").submit();
+                        }, 1000);
+                        setTimeout(() => {
+                            btn.classList.remove("btn-success");
+                            btn.classList.add("btn-danger");
+                            btn.textContent = "Add to card";
+                        }, 1000);
+                    });
+                }
+            });
+        </script>
+
+    </body>
+
+    </html>

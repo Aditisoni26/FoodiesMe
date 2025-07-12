@@ -1,0 +1,228 @@
+body {
+    font-family: "Plus Jakarta Sans", sans-serif !important;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    flex: 1;
+}
+
+.home {
+    display: flex;
+    flex-wrap: wrap;
+    text-decoration: none;
+    margin-left: 2.2rem;
+}
+
+.card {
+    height: 19rem;
+    margin: 2rem 2rem 2rem 1rem;
+    padding: 1rem 1rem 0rem 1rem;
+}
+
+.card img {
+    height: 14rem;
+}
+
+.card a {
+    text-decoration: none;
+    color: black;
+}
+
+.category {
+    color: red;
+}
+
+.navbar-brand {
+    height: 4rem;
+    width: 4rem;
+    margin-left: 2rem;
+    border-radius: 50%;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border: 2px solid rgb(238, 236, 236)
+}
+
+.login,
+.signup {
+    text-decoration: none;
+    color: black;
+    margin-left: 1.5rem;
+    padding: 0 !important;
+}
+
+.d-flex {
+    margin-right: 3rem;
+}
+
+.f-info-links a {
+    text-decoration: none;
+    color: #222222;
+}
+
+.f-info-links a:hover {
+    text-decoration: underline;
+}
+
+.f-info {
+    height: 7rem;
+    background-color: #ebebeb;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: space-evenly;
+    justify-content: center;
+    text-align: center;
+}
+
+.f-info-socials {
+    width: 100%;
+}
+
+.f-info-socials i {
+    font-size: 1.2rem;
+    margin-right: 1rem;
+    margin-top: 0.5rem;
+}
+
+.f-info-links {
+    width: 100%;
+}
+
+.footer {
+    width: 100%;
+    text-align: center;
+}
+
+.show-card {
+    margin-left: 32rem;
+    height: 28rem;
+}
+
+.show-card img {
+    height: 15rem;
+}
+
+.show-button {
+    margin-left: 37rem;
+    margin-bottom: 3rem;
+}
+
+.show-button button {
+    margin-left: 2rem;
+}
+
+.food-nav div img {
+    height: 5rem;
+    width: 5rem;
+    border-radius: 50%;
+}
+
+.food-nav {
+    display: flex;
+    margin-top: 1.5rem;
+}
+
+.food-nav div {
+    display: flex;
+    flex-wrap: wrap;
+    width: 7rem;
+    margin-left: 1.5rem;
+    text-align: center;
+    justify-content: center;
+}
+
+.food-nav div span {
+    display: flex;
+    font-size: 1rem;
+    text-align: center;
+    justify-content: center;
+}
+
+.login-page {
+    width: 40%;
+    margin-left: 30%;
+    margin-top: 4rem;
+}
+
+.signup-page {
+    width: 40%;
+    margin-left: 30%;
+    margin-top: 1rem;
+}
+
+.body-content {
+    min-height: 73vh;
+}
+
+.btn-buy {
+    margin-left: 15rem;
+}
+
+.show-button {
+    display: flex;
+}
+
+.card .card-image img {
+    height: 17rem !important;
+    margin-right: 12rem !important;
+    margin-top: 1rem !important;
+    max-width: 12rem !important;
+}
+
+.card-text {
+    margin: 1px 1px 1px 1px !important
+}
+
+.card-content {
+    min-width: 65%!important;
+}
+
+.card-calculation {
+    min-width: 35% !important;
+    min-height: 20rem;
+}
+
+.full-card {
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.card-content .card-text {
+    margin: 2px 1px 15px 1px !important
+}
+
+.card-calculation .card-body h6 {
+    margin: 1rem 1rem 1rem 1rem;
+}
+
+@media (max-width: 768px) {
+    .food-nav {
+        display: none;
+    }
+}
+
+#rzp-button {
+    margin-left: 700px;
+}
+
+.buy-button {
+    margin-left: -90px;
+}
+
+.card-address {
+    max-height: 150px;
+}
+
+.schedule-input {
+    max-width: 600px;
+}
+
+.schedule-div {
+    margin-left: 450px;
+}

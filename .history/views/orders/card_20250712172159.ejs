@@ -1,0 +1,141 @@
+<% layout("/layouts/boilerplate") %>
+
+    <body>
+        <div class="container-fluid px-3 px-md-5 mt-4 mb-5">
+            <% if (items.length === 0) { %>
+                <h3 class="text-center text-danger my-5">Cart is Empty!</h3>
+                <% } else { %>
+                    <div class="row g-4">
+                        <!-- Left: Cart Items -->
+                        <div class="col-12 col-lg-8">
+                            <% for (item of items) { %>
+                                <div class="card position-relative">
+                                    <!-- Delete button -->
+                                    <form method="POST" action="/card/<%= item._id %>/delete?_method=DELETE" class="position-absolute top-0 end-0 m-2">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                  <i class="fa-solid fa-xmark"></i>
+                </button>
+                                    </form>
+
+                                    <div class="row g-0 flex-column flex-md-row">
+                                        <!-- Image -->
+                                        <div class="col-md-4 text-center p-2">
+                                            <img src="<%= item.image_url %>" class="img-fluid rounded" style="max-height: 160px; object-fit: cover;">
+                                        </div>
+
+                                        <!-- Details -->
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <h5 class="card-title mb-1">Name:
+                                                    <%= item.name %>
+                                                </h5>
+                                                <p class="card-text mb-1">Price: ₹
+                                                    <%= item.price %>
+                                                </p>
+                                                <p class="card-text mb-1">Veg:
+                                                    <%= item.veg %>
+                                                </p>
+                                                <p class="card-text mb-1">Category:
+                                                    <%= item.category %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% } %>
+                        </div>
+
+                        <!-- Right: Price Calculation -->
+                        <div class="cal-card col-lg-4">
+                            <div class="card shadow-sm ">
+                                <div class="card-body ">
+                                    <h4 class="text-danger mb-3 "><b>Total Amount</b></h4>
+                                    <h6 class="text-secondary ">Items:
+                                        <%= totalItems %>
+                                    </h6>
+                                    <h6 class="text-secondary ">Price: ₹
+                                        <%= totalPrice.toFixed(2) %>
+                                    </h6>
+                                    <h6 class="text-secondary ">Discount (10%): ₹
+                                        <%= discount.toFixed(2) %>
+                                    </h6>
+                                    <h6 class="text-secondary ">GST (18%): ₹
+                                        <%= gst.toFixed(2) %>
+                                    </h6>
+                                    <hr>
+                                    <h5 class="text-danger "><b>Final: ₹ <%= finalAmount.toFixed(2) %></b></h5>
+
+                                    <!-- Schedule -->
+                                    <div class="mb-3 mt-3 ">
+                                        <label for="scheduledAt " class="form-label ">Schedule Delivery</label>
+                                        <input type="datetime-local " id="scheduledAt " class="form-control " required>
+                                    </div>
+
+                                    <button type="button " id="rzp-cart-btn " class="btn btn-danger w-100 ">Pay & Order All</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+        </div>
+
+        <!-- Razorpay Script -->
+        <script src="https://checkout.razorpay.com/v1/checkout.js "></script>
+        <script>
+            document.getElementById('rzp-cart-btn') ? .addEventListener('click', async() => {
+                const scheduledAt = document.getElementById('scheduledAt').value;
+                if (!scheduledAt || new Date(scheduledAt) < new Date()) {
+                    alert("Please select a valid future date & time for delivery.");
+                    return;
+                }
+
+                const amount = <%= finalAmount.toFixed(2) %>;
+
+                const res = await fetch("/create-cart-order", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        amount
+                    }),
+                });
+
+                const data = await res.json();
+
+                const options = {
+                    key: "<%= process.env.RAZORPAY_KEY_ID || 'rzp_test_123456789' %>",
+                    amount: data.amount,
+                    currency: "INR",
+                    name: "FoodieMe",
+                    description: "Cart Order",
+                    order_id: data.id,
+                    handler: function(response) {
+                        alert("Payment ID: " + response.razorpay_payment_id);
+                        window.location.href = `/card/order-all-success?scheduledAt=${encodeURIComponent(scheduledAt)}`;
+                    },
+                    theme: {
+                        color: "#F37254"
+                    }
+                };
+
+                const rzp = new Razorpay(options);
+                rzp.open();
+            });
+        </script>
+
+        <style>
+            .card {
+                max-height: 13rem;
+            }
+            
+            .card img {
+                min-width: 15rem;
+            }
+            
+            .cal-card .card {
+                min-height: 23rem;
+            }
+        </style>
+
+    </body>
