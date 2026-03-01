@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const cardSchema = new Schema({
     name: {
-        type: String, // ✅ Removed quotes
+        type: String, 
         required: true,
     },
     image_url: {
@@ -14,10 +14,10 @@ const cardSchema = new Schema({
         required: true,
     },
     veg: {
-        type: Boolean, // ✅ Removed quotes
+        type: Boolean, 
     },
     category: {
-        type: String, // ✅ Removed quotes
+        type: String, 
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
